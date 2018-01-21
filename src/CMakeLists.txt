@@ -26,18 +26,9 @@ if(WITH_REDIS)
 endif()
 
 set(PROBE_MODULE_SOURCES
-    probe_modules/module_icmp_echo.c
-    probe_modules/module_icmp_echo_time.c
     probe_modules/module_tcp_synscan.c
-    probe_modules/module_tcp_synackscan.c
-	#probe_modules/module_tcp_cisco_backdoor.c
-    probe_modules/module_udp.c
     probe_modules/packet.c
     probe_modules/probe_modules.c
-    probe_modules/module_ntp.c
-    probe_modules/module_upnp.c
-    probe_modules/module_dns.c
-    probe_modules/module_bacnet.c
 )
 
 set(SOURCES
