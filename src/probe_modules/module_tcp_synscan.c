@@ -30,7 +30,6 @@ static int synscan_global_initialize(struct state_conf *state)
 }
 
 static int synscan_init_perthread(void *buf, macaddr_t *src, macaddr_t *gw,
-				  port_h_t dst_port,
 				  __attribute__((unused)) void **arg_ptr)
 {
 	memset(buf, 0, MAX_PACKET_SIZE);
@@ -39,19 +38,18 @@ static int synscan_init_perthread(void *buf, macaddr_t *src, macaddr_t *gw,
 	struct ip *ip_header = (struct ip *)(&eth_header[1]);
 	uint16_t len = htons(sizeof(struct ip) + sizeof(struct tcphdr));
 	make_ip_header(ip_header, IPPROTO_TCP, len);
-	struct tcphdr *tcp_header = (struct tcphdr *)(&ip_header[1]);
-	make_tcp_header(tcp_header, dst_port, TH_SYN);
 	return EXIT_SUCCESS;
 }
 
 static int synscan_make_packet(void *buf, UNUSED size_t *buf_len,
 			       ipaddr_n_t src_ip, ipaddr_n_t dst_ip,
-			       uint32_t *validation, int probe_num,
+			       uint32_t *validation, int probe_num, port_n_t dst_port,
 			       UNUSED void *arg)
 {
 	struct ether_header *eth_header = (struct ether_header *)buf;
 	struct ip *ip_header = (struct ip *)(&eth_header[1]);
 	struct tcphdr *tcp_header = (struct tcphdr *)(&ip_header[1]);
+    make_tcp_header(tcp_header, dst_port, TH_SYN);
 	uint32_t tcp_seq = validation[0];
 
 	ip_header->ip_src.s_addr = src_ip;
