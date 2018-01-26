@@ -32,6 +32,8 @@ typedef struct shard {
 		uint64_t last;
 		uint64_t factor;
 		uint64_t modulus;
+        uint16_t laps; // counts number of times gone through group
+        // this is for the all port scan
 	} params;
 	uint64_t current;
 	uint8_t thread_id;
