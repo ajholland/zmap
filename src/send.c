@@ -140,9 +140,11 @@ iterator_t *send_init(void)
 	if (zconf.bandwidth > 0) {
 		size_t pkt_len = zconf.probe_module->packet_length;
 		pkt_len *= 8;
-		// 7 byte MAC preamble, 1 byte Start frame, 4 byte CRC, 12 byte inter-frame gap
+		// 7 byte MAC preamble, 1 byte Start frame, 4 byte CRC, 12 byte
+		// inter-frame gap
 		pkt_len += 8 * 24;
-		// adjust calculated length if less than the minimum size of an ethernet frame
+		// adjust calculated length if less than the minimum size of an
+		// ethernet frame
 		if (pkt_len < 84 * 8) {
 			pkt_len = 84 * 8;
 		}
@@ -160,9 +162,10 @@ iterator_t *send_init(void)
 				zconf.rate = 1;
 			}
 		}
-		log_debug("send",
-			  "using bandwidth %lu bits/s for %zu byte probe, rate set to %d pkt/s",
-			  zconf.bandwidth, pkt_len/8, zconf.rate);
+		log_debug(
+		    "send",
+		    "using bandwidth %lu bits/s for %zu byte probe, rate set to %d pkt/s",
+		    zconf.bandwidth, pkt_len / 8, zconf.rate);
 	}
 	// Get the source hardware address, and give it to the probe
 	// module
@@ -321,7 +324,9 @@ int send_run(sock_t st, shard_t *s)
 						 (t - last_time) /
 						 (zconf.rate / zconf.senders);
 					if (delay < 1)
-						log_fatal("send", "send rate exceeds system capabilities");
+						log_fatal(
+						    "send",
+						    "send rate exceeds system capabilities");
 					last_count = count;
 					last_time = t;
 				}
@@ -360,10 +365,10 @@ int send_run(sock_t st, shard_t *s)
 			uint32_t validation[VALIDATE_BYTES / sizeof(uint32_t)];
 			validate_gen(src_ip, current_ip, (uint8_t *)validation);
 			size_t length = zconf.probe_module->packet_length;
-            port_h_t target_port = get_port(current_ip, s);
-            zconf.probe_module->make_packet(buf, &length, src_ip,
-							current_ip, validation,
-							i, target_port, probe_data);
+			port_h_t target_port = get_port(current_ip, s);
+			zconf.probe_module->make_packet(
+			    buf, &length, src_ip, current_ip, validation, i,
+			    target_port, probe_data);
 			if (length > MAX_PACKET_SIZE) {
 				log_fatal(
 				    "send",

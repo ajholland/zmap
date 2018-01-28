@@ -23,9 +23,7 @@
 extern probe_module_t module_tcp_synscan;
 // ADD YOUR MODULE HERE
 
-probe_module_t *probe_modules[] = {
-    &module_tcp_synscan
-};
+probe_module_t *probe_modules[] = {&module_tcp_synscan};
 
 probe_module_t *get_probe_module_by_name(const char *name)
 {

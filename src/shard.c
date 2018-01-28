@@ -95,10 +95,9 @@ void shard_init(shard_t *shard, uint16_t shard_idx, uint16_t num_shards,
 	// Set the shard at the beginning.
 	shard->current = shard->params.first;
 
-    // Set the laps for the shard
-    shard->params.laps = 0;
-    
-    
+	// Set the laps for the shard
+	shard->params.laps = 0;
+
 	// Set the (thread) id
 	shard->thread_id = thread_idx;
 
@@ -146,21 +145,21 @@ static inline uint32_t shard_get_next_elem(shard_t *shard)
 uint32_t shard_get_next_ip(shard_t *shard)
 {
 	if (shard->current == ZMAP_SHARD_DONE) {
-        shard->params.laps++;
+		shard->params.laps++;
 	}
-    if (shard->params.laps == 0xFFFF){
-        return ZMAP_SHARD_DONE;
-    }
+	if (shard->params.laps == 0xFFFF) {
+		return ZMAP_SHARD_DONE;
+	}
 	while (1) {
 		uint32_t candidate = shard_get_next_elem(shard);
 		if (candidate == shard->params.last) {
-			//shard->current = ZMAP_SHARD_DONE;
+			// shard->current = ZMAP_SHARD_DONE;
 			shard->params.laps++;
 		}
-        if (shard->params.laps == 0xFFFF){
-            shard->current = ZMAP_SHARD_DONE;
-            return ZMAP_SHARD_DONE;
-        }
+		if (shard->params.laps == 0xFFFF) {
+			shard->current = ZMAP_SHARD_DONE;
+			return ZMAP_SHARD_DONE;
+		}
 		if (candidate - 1 < zsend.max_index) {
 			shard->state.whitelisted++;
 			return blacklist_lookup_index(candidate - 1);
@@ -169,6 +168,4 @@ uint32_t shard_get_next_ip(shard_t *shard)
 	}
 }
 
-uint16_t get_port(uint32_t ip, shard_t *shard) {
-    return 1;
-}
+uint16_t get_port(uint32_t ip, shard_t *shard) { return 1; }
