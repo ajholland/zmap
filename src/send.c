@@ -25,6 +25,7 @@
 #include "../lib/blacklist.h"
 #include "../lib/lockfd.h"
 #include "../lib/pbm.h"
+#include "../lib/types.h"
 
 #include "aesrand.h"
 #include "get_gateway.h"
@@ -359,9 +360,10 @@ int send_run(sock_t st, shard_t *s)
 			uint32_t validation[VALIDATE_BYTES / sizeof(uint32_t)];
 			validate_gen(src_ip, current_ip, (uint8_t *)validation);
 			size_t length = zconf.probe_module->packet_length;
-			zconf.probe_module->make_packet(buf, &length, src_ip,
+            port_h_t target_port = get_port(current_ip, s);
+            zconf.probe_module->make_packet(buf, &length, src_ip,
 							current_ip, validation,
-							i, zconf.target_port, probe_data);
+							i, target_port, probe_data);
 			if (length > MAX_PACKET_SIZE) {
 				log_fatal(
 				    "send",

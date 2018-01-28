@@ -168,3 +168,7 @@ uint32_t shard_get_next_ip(shard_t *shard)
 		shard->state.blacklisted++;
 	}
 }
+
+uint16_t get_port(uint32_t ip, shard_t *shard) {
+    return 1;
+}
