@@ -76,6 +76,15 @@ else()
 endif()
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${JSON_CFLAGS}")
 
+pkg_check_modules(GLIB glib-2.0)
+if(GLIB_FOUND)
+    include_directories(${GLIB_INCLUDE_DIRS})
+else()
+    message(FATAL_ERROR "Did not find glib")
+endif()
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${GLIB_CFLAGS}")
+
+
 if(WITH_REDIS)
     set(REDIS_LIBS hiredis)
     add_definitions("-DREDIS")

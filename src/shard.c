@@ -126,6 +126,11 @@ void shard_init(shard_t *shard, uint16_t shard_idx, uint16_t num_shards,
 	mpz_clear(prime_m);
 	mpz_clear(start_m);
 	mpz_clear(stop_m);
+    
+    shard->mapping = g_hash_table_new(g_int_hash, g_int_equal);
+    const cyclic_group_t* ports_group = get_group(65536);
+    cycle_t cy = make_cycle(ports_group, zconf.aes);
+    shard->generator = cy.generator;
 }
 
 uint32_t shard_get_cur_ip(shard_t *shard)
@@ -147,7 +152,7 @@ uint32_t shard_get_next_ip(shard_t *shard)
 	if (shard->current == ZMAP_SHARD_DONE) {
 		shard->params.laps++;
 	}
-	if (shard->params.laps == 0xFFFF) {
+	if (shard->params.laps > 0xFFFF) {
 		return ZMAP_SHARD_DONE;
 	}
 	while (1) {
@@ -156,7 +161,7 @@ uint32_t shard_get_next_ip(shard_t *shard)
 			// shard->current = ZMAP_SHARD_DONE;
 			shard->params.laps++;
 		}
-		if (shard->params.laps == 0xFFFF) {
+		if (shard->params.laps > 0xFFFF) {
 			shard->current = ZMAP_SHARD_DONE;
 			return ZMAP_SHARD_DONE;
 		}
@@ -168,4 +173,21 @@ uint32_t shard_get_next_ip(shard_t *shard)
 	}
 }
 
-uint16_t get_port(uint32_t ip, shard_t *shard) { return 1; }
+uint16_t get_port(uint32_t ip, shard_t *shard) {
+    gpointer p = g_hash_table_lookup(shard->mapping, (gpointer)&ip);
+    if (p != NULL) {
+        uint32_t* v = (uint32_t *)p;
+        *v *= shard->generator;
+        *v %= 65537;
+        g_hash_table_replace(shard->mapping, (gpointer)&ip, (gpointer)v);
+        return *v;
+    } else {
+        uint32_t start;
+        random_bytes(&start, sizeof(uint32_t));
+        start %= 65537;
+        gint* k = g_new(gint, 1);
+        *k = start;
+        g_hash_table_insert(shard->mapping, (gpointer)&ip, k);
+        return start;
+    }
+}

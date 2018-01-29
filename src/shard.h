@@ -10,6 +10,7 @@
 #define ZMAP_SHARD_H
 
 #include <stdint.h>
+#include <glib.h>
 
 #include "cyclic.h"
 
@@ -32,13 +33,15 @@ typedef struct shard {
 		uint64_t last;
 		uint64_t factor;
 		uint64_t modulus;
-		uint16_t laps; // counts number of times gone through group
+		uint32_t laps; // counts number of times gone through group
 			       // this is for the all port scan
 	} params;
 	uint64_t current;
 	uint8_t thread_id;
 	shard_complete_cb cb;
 	void *arg;
+    GHashTable* mapping;
+    uint64_t generator;
 } shard_t;
 
 void shard_init(shard_t *shard, uint16_t shard_idx, uint16_t num_shards,

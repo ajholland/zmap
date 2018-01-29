@@ -215,6 +215,7 @@ target_link_libraries(
     ${DNET_LIBRARIES}
     ${REDIS_LIBS}
     ${JSON_LIBRARIES}
+    ${GLIB_LIBRARIES}
 )
 
 target_link_libraries(
@@ -228,6 +229,7 @@ target_link_libraries(
     zmaplib
     gmp
     m
+    ${GLIB_LIBRARIES}
 )
 
 target_link_libraries(
@@ -244,6 +246,7 @@ target_link_libraries(
     ${DNET_LIBRARIES}
     ${REDIS_LIBS}
     ${JSON_LIBRARIES}
+    ${GLIB_LIBRARIES}
 )
 
 # Install binary

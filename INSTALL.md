@@ -27,6 +27,7 @@ ZMap has the following dependencies:
   - [json-c](https://github.com/json-c/json-c/) - JSON implementation in C
   - [libunistring](https://www.gnu.org/software/libunistring/) - Unicode string library for C
   - [libdnet](https://github.com/dugsong/libdnet) - (macOS Only) Gateway and route detection
+  - [libglib2.0-dev](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html) - Hash Map library in C
 
 In addition, the following optional packages enable optional ZMap functionality:
 
@@ -36,7 +37,7 @@ Install the required dependencies with the following commands.
 
 * On Debian-based systems (including Ubuntu):
    ```sh
-   sudo apt-get install build-essential cmake libgmp3-dev gengetopt libpcap-dev flex byacc libjson-c-dev pkg-config libunistring-dev
+   sudo apt-get install build-essential cmake libgmp3-dev gengetopt libpcap-dev flex byacc libjson-c-dev pkg-config libunistring-dev libglib2.0-dev
    ```
 
 * On RHEL- and Fedora-based systems (including CentOS):
@@ -46,7 +47,7 @@ Install the required dependencies with the following commands.
 
 * On macOS systems (using [Homebrew](http://brew.sh/)):
   ```sh
-  brew install pkg-config cmake gmp gengetopt json-c byacc libdnet libunistring
+  brew install pkg-config cmake gmp gengetopt json-c byacc libdnet libunistring glib
   ```
 
 ### Building and Installing ZMap
