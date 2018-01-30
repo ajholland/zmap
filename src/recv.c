@@ -73,7 +73,7 @@ void handle_packet(uint32_t buflen, const u_char *bytes)
 		zrecv.success_total++;
 		if (!is_repeat) {
 			zrecv.success_unique++;
-			pbm_set(seen, ntohl(src_ip));
+			//pbm_set(seen, ntohl(src_ip));
 		}
 		if (zsend.complete) {
 			zrecv.cooldown_total++;

@@ -100,9 +100,9 @@ static int synscan_validate_packet(const struct ip *ip_hdr, uint32_t len,
 	uint16_t sport = tcp->th_sport;
 	uint16_t dport = tcp->th_dport;
 	// validate source port
-	if (ntohs(sport) != zconf.target_port) {
-		return 0;
-	}
+	//if (ntohs(sport) != zconf.target_port) {
+	//	return 0;
+	//}
 	// validate destination port
 	if (!check_dst_port(ntohs(dport), num_ports, validation)) {
 		return 0;
